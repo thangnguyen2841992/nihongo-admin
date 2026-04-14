@@ -32,13 +32,13 @@ public class AdminController {
         }
 
         if (token != null) {
-            String name = adminService.getName();
+            String name = adminService.extractUsername(token).getFullName();
             model.addAttribute("name", name);
             model.addAttribute("isLoggedIn", true);
         } else {
             model.addAttribute("isLoggedIn", false);
         }
 
-        return "home";
+        return "admin/admin-home";
     }
 }
