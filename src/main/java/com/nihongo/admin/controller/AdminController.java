@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 @RequestMapping("/api/admin")
 public class AdminController {
     private final AdminService adminService;
@@ -19,7 +23,7 @@ public class AdminController {
     }
 
     @GetMapping("/home")
-    public String home(HttpServletRequest request, Model model) {
+    public Map<String, Object> home(HttpServletRequest request) {
 
         String token = null;
 
@@ -31,14 +35,16 @@ public class AdminController {
             }
         }
 
+        Map<String, Object> response = new HashMap<>();
+
         if (token != null) {
             String name = adminService.extractUsername(token).getFullName();
-            model.addAttribute("name", name);
-            model.addAttribute("isLoggedIn", true);
+            response.put("name", name);
+            response.put("isLoggedIn", true);
         } else {
-            model.addAttribute("isLoggedIn", false);
+            response.put("isLoggedIn", false);
         }
 
-        return "admin/admin-home";
+        return response;
     }
 }
