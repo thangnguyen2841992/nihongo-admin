@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,6 +34,11 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public List<UserDTO> getAllUser() {
+        return this.userClient.getAllUsers();
     }
 
 }

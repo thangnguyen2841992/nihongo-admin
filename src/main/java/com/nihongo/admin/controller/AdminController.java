@@ -3,6 +3,9 @@ package com.nihongo.admin.controller;
 import com.nihongo.admin.service.AdminService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,7 @@ public class AdminController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/home")
     public Map<String, Object> home(HttpServletRequest request) {
 
@@ -46,5 +50,11 @@ public class AdminController {
         }
 
         return response;
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<?> getAllUsers() {
+        return new ResponseEntity<>(this.adminService.getAllUser(), HttpStatus.OK);
     }
 }
