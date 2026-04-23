@@ -1,5 +1,6 @@
 package com.nihongo.admin.controller;
 
+import com.nihongo.admin.model.UserDTO;
 import com.nihongo.admin.service.AdminService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,8 +43,11 @@ public class AdminController {
         Map<String, Object> response = new HashMap<>();
 
         if (token != null) {
-            String name = adminService.extractUsername(token).getFullName();
+            UserDTO userDTO = this.adminService.extractUsername(token);
+            String name = userDTO.getFullName();
+            String email = userDTO.getEmail();
             response.put("name", name);
+            response.put("email", email);
             response.put("isLoggedIn", true);
         } else {
             response.put("isLoggedIn", false);
