@@ -1,6 +1,8 @@
 server:
   port: 8084
 spring:
+  config:
+    import: "optional:file:./.local/nihongo-admin.properties,optional:file:../.local/nihongo-admin.properties"
   application:
     name: admin-service
   thymeleaf:
@@ -14,7 +16,7 @@ spring:
   datasource:
     url: jdbc:mysql://onehost-amdcloudhn022602.000nethost.com:3306/tsezwyvdhosting_nihongo?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: tsezwyvdhosting_nihongo_app
-    password: thuThuy@1
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:
@@ -31,7 +33,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 jwt:
-  secret: "U7tjRTsx0baZLsRhHGcc0FA/B7MJ65IfQ0jZHvUyYrE="
+  secret: ${JWT_SECRET}
