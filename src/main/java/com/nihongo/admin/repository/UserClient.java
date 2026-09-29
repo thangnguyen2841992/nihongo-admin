@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "gateway-service", url = "${services.gateway-url:http://localhost:8082}")
+@FeignClient(name = "user-service", url = "${services.user.url:}")
 public interface UserClient {
     @GetMapping("/api/users/getAllUsers")
     List<UserDTO> getAllUsers();

@@ -1,19 +1,15 @@
 package com.nihongo.admin.controller;
 
-import com.nihongo.admin.model.UserDTO;
 import com.nihongo.admin.service.AdminService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -28,32 +24,11 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/home")
-    public Map<String, Object> home(HttpServletRequest request) {
-
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("accessToken".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        Map<String, Object> response = new HashMap<>();
-
-        if (token != null) {
-            UserDTO userDTO = this.adminService.extractUsername(token);
-            String name = userDTO.getFullName();
-            String email = userDTO.getEmail();
-            response.put("name", name);
-            response.put("email", email);
-            response.put("isLoggedIn", true);
-        } else {
-            response.put("isLoggedIn", false);
-        }
-
-        return response;
+    public Map<String, Object> home(@AuthenticationPrincipal Jwt jwt) {
+        String name = jwt.getClaimAsString("name");
+        String email = jwt.getClaimAsString("email");
+        return Map.of("name", name == null ? jwt.getSubject() : name,
+                "email", email == null ? "" : email, "isLoggedIn", true);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
