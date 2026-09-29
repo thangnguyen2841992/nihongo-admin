@@ -1,29 +1,10 @@
 server:
   port: 8084
 spring:
+  config:
+    import: "optional:file:./.local/audit-secrets-admin.properties,optional:file:./admin/.local/audit-secrets-admin.properties"
   application:
     name: admin-service
-  thymeleaf:
-    enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-  datasource:
-    url: jdbc:mysql://onehost-amdcloudhn022602.000nethost.com:3306/tsezwyvdhosting_nihongo?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: tsezwyvdhosting_nihongo_app
-    password: thuThuy@1
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
-      max-lifetime: 45000
-      idle-timeout: 30000
-      connection-timeout: 30000
-      validation-timeout: 5000
 eureka:
   instance:
     prefer-ip-address: true
@@ -34,4 +15,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 jwt:
-  secret: "U7tjRTsx0baZLsRhHGcc0FA/B7MJ65IfQ0jZHvUyYrE="
+  secret: ${JWT_SECRET}

@@ -1,7 +1,5 @@
 package com.nihongo.admin.config;
 
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +8,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 @Configuration
 public class JwtConfig {
@@ -18,9 +18,9 @@ public class JwtConfig {
     public JwtDecoder jwtDecoder(
             @Value("${jwt.secret}") String secret
     ) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-
-        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+        byte[] keyBytes = Base64.getDecoder().decode(secret);
+        if (keyBytes.length < 32) throw new IllegalArgumentException("JWT secret must contain at least 32 bytes");
+        SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
 
         return NimbusJwtDecoder
                 .withSecretKey(key)
