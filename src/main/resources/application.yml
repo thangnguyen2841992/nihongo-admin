@@ -2,7 +2,7 @@ server:
   port: 8084
 spring:
   config:
-    import: "optional:file:./.local/nihongo-admin.properties,optional:file:../.local/nihongo-admin.properties,optional:file:./.local/audit-secrets-admin.properties,optional:file:./admin/.local/audit-secrets-admin.properties"
+    import: "optional:file:./.local/shared.properties,optional:file:../.local/shared.properties"
   application:
     name: admin-service
 eureka:
