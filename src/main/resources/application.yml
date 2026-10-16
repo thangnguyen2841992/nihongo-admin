@@ -1,11 +1,21 @@
 server:
   address: ${SERVICE_BIND_ADDRESS:127.0.0.1}
   port: 8084
+  compression:
+    enabled: true
+    min-response-size: 1024
 spring:
   profiles:
     default: local
   application:
     name: admin-service
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: ${FEIGN_CONNECT_TIMEOUT:3000}
+            read-timeout: ${FEIGN_READ_TIMEOUT:10000}
 eureka:
   instance:
     prefer-ip-address: true

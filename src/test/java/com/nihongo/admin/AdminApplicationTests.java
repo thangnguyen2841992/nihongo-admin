@@ -5,6 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(properties = {
         "spring.config.import=", "eureka.client.enabled=false", "spring.cloud.discovery.enabled=false",
+        "security.session-validation.enabled=false", "security.origin-check.enabled=false",
         "services.user.url=http://127.0.0.1:65530",
         "jwt.secret=MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTA="
 })
