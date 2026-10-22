@@ -31,9 +31,5 @@ public class AdminController {
                 "email", email == null ? "" : email, "isLoggedIn", true);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
-    @GetMapping("/getAllUsers")
-    public ResponseEntity<?> getAllUsers() {
-        return new ResponseEntity<>(this.adminService.getAllUser(), HttpStatus.OK);
-    }
+    // The unpaged /getAllUsers proxy was removed; the admin UI uses user-service's paged account search.
 }
